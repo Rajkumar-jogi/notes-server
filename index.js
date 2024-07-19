@@ -6,6 +6,7 @@ const app = express();
 const cors = require('cors')
 
 const userRoutes = require('./Routes/userRoutes');
+const noteRoutes = require('./Routes/noteRoutes')
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -26,6 +27,7 @@ if (!mongoUri) {
 
 // Mounting the user routes
 app.use('/api/users', userRoutes);
+app.use('/api/notes', noteRoutes)
 
 async function connectMongoDb(){
    try {

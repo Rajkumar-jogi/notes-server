@@ -15,14 +15,14 @@ const registerUser = async (request, response) => {
       
       // Validation: Check if required fields are missing
       if(!username || !password ){
-        return response.status(400).json({message: 'Please provide all required fields...'})
+        return response.status(400).json({error_msg: 'Please provide all required fields...'})
       } 
 
       const user = await User.findOne({username})
       
       // Validation: Check if email is already registered
       if(user){
-        return response.status(400).json({message: "user already exists..."})
+        return response.status(400).json({error_msg: "user already exists..."})
       }
       
       // Hash the password
@@ -42,7 +42,7 @@ const registerUser = async (request, response) => {
 
    }catch(error){
       console.log(error)
-      return response.status(500).json({error: 'Internal Server Error..'})
+      return response.status(500).json({error_msg: 'Internal Server Error..'})
    }
 }
 
@@ -53,13 +53,13 @@ const LoginUser = async (request, response) => {
     try{
         const {username, password } = request.body
         if(!username || !password ){
-            return response.status(400).json({message: 'Please enter required username and password'})
+            return response.status(400).json({error_msg: 'Please enter required username and password'})
         }
 
         const user = await User.findOne({username})
 
         if(!user){
-            return response.status(401).json({message: "Invalid username"})
+            return response.status(401).json({error_msg: "Invalid username"})
         }
 
         const dbPassword = user.password
@@ -69,11 +69,11 @@ const LoginUser = async (request, response) => {
             const token = generateToken(user)
             return response.status(200).json({message: "Login Success", token})
         }else{
-            return response.status(401).json({message: "Invalid Password"})
+            return response.status(401).json({error_msg: "Invalid Password"})
         }
     }catch(err){
         console.log(err)
-        return response.status(500).json({message: "Internal Server Error!"})
+        return response.status(500).json({error_msg: "Internal Server Error!"})
     }
     
 }
